@@ -143,7 +143,7 @@ def get_xy_from_city(source_path):
 ### 기상청 api 관련 정보 선언
 
 url = 'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst'
-service_key = '7i9BdFoGGNdILy59nG6hK7i6D2FIfZvfiBXf%2BEsRXYgLQWCjfjo2JKON9qqBrkZcPA6ovPEkSdM90R8D%2BrCPHw%3D%3D'
+service_key = ''
 
 full_url = f"{url}?serviceKey={service_key}"
 
