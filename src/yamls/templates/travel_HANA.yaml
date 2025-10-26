@@ -1,0 +1,12 @@
+page:
+  - documents_page
+templates:
+  document_qa:
+    additional_document:
+    function:
+      utils.utils_documents:
+        - get_text_from_documents
+        - get_text_chunks_from_documents
+        - get_vectorstore_from_documents
+    
+

@@ -1,0 +1,8 @@
+v20240328
+
+conda create --name lifelog python==3.11 -y
+conda activate lifelog
+
+pip install -r requirements.txt
+
+streamlit run run_streamlit.py

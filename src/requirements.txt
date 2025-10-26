@@ -1,0 +1,11 @@
+streamlit
+langchain
+langchain-openai
+tiktoken
+loguru
+pypdf
+pyvis
+sentence-transformers
+faiss-cpu
+openai
+xmltodict

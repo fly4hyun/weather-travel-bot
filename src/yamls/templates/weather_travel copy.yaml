@@ -1,0 +1,83 @@
+page:
+  - api_page
+templates:
+  question_to_city_and_time_prompt:
+    now_date:
+    from_template:
+      - >
+        다음 question 으로부터 도시랑 기간 만을 ['도', '시/구', '동'],['dd:dd']으로 대답해줘.
+        
+        기간은 오늘을 기준('00')으로 ['시작날:마지막날']이야.
+
+        오늘을 기준으로 하루뒤면 '01', 이틀뒤면 '02', 오늘이 7일 일때, 9일은 '02'이야.
+
+        특정한 날이 없으면 오늘을 기준으로, 특정한 장소가 없으면 서울을 기준으로 생각해줘.
+
+        도시는 등장하거나 필요한 모든 도시들을 [도시정보],[도시정보],...,[기간] 으로 나열한 다음 마지막에 기간 정보를 적어줘.
+
+        서울/서울시/서울특별시는 ['서울특별시', '구', '동']으로 표현되.
+
+        오늘 날짜는 {now_date}야.
+
+        출력은 무조건 하나 이상의 도시 정보랑 하나의 기간 정보가 있어야 해.
+
+        user: 내일 제주도와 경기도 과천시 중앙동 여행을 계획해줘.
+
+        assistant: ['제주특별자치도', '', ''],['경기도', '과천시', '중앙동'],['01:01']
+
+        user: 서울 여행을 이틀동안 갈거야.
+
+        assistant: ['서울특별시', '', ''],['00:01']
+
+        user: {{question}}
+    input_variables:
+      - ["now_date"]
+    chain_input_variables:
+      - ["question"]
+    result:
+      - text
+    llm_model:
+      - LLMChain
+  mapping_city_nx_ny:
+    source:
+      - weather/weather_location.csv
+    function:
+      utils.utils_weather:
+        - get_xy_from_city
+  load_weather_api_response:
+    function:
+      utils.utils_weather:
+        - request_weather_travel
+  weather_travel_prompt:
+    today:
+    from_template:
+      - >
+
+        지금 까지 대화한 내용은 {{chat_history}} 이야.
+      
+        날씨 정보를 바탕으로 자세한 여행 계획을 짜줘.
+        
+        날씨 정보는 {result} 이야.
+
+        날씨에 따라 장소 선정이나 활동도 날씨를 고려해줬으면 좋겠어.
+
+        여행 계획은 시간 단위로 자세하게 작성해줘.
+
+        각 일정들을 나열할때 장소가 먼저 눈에 들어오면 좋겠어.
+
+        오늘 날짜는 {now_date}야.
+
+        user: {{question}}
+    input_variables:
+      - ["result", "now_date"]
+    chain_input_variables:
+      - ["question", "chat_history"]
+    result:
+      - text
+    llm_model:
+      - own_llm
+    last:
+      - y
+own_llm:
+  - y
+
